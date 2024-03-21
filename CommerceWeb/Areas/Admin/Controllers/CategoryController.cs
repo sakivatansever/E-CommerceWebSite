@@ -1,11 +1,14 @@
 ﻿using Commerce.DataAccess.Data;
 using Commerce.DataAccess.Repository.IRepository;
 using Commerce.Models;
+using Commerce.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CommerceWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -32,7 +35,7 @@ namespace CommerceWeb.Areas.Admin.Controllers
             {
                 _unitOfWork.Category.Add(obj);
                 _unitOfWork.Save();
-                TempData["success"] = "Category created succesfully";
+                TempData["success"] = "Kategori başarıyla oluşturuldu";
                 return RedirectToAction("Index");
             }
             return View();
@@ -59,7 +62,7 @@ namespace CommerceWeb.Areas.Admin.Controllers
             {
                 _unitOfWork.Category.Update(obj);
                 _unitOfWork.Save();
-                TempData["success"] = "Category updated succesfully";
+                TempData["success"] = "Kategori başarıyla güncellendi";
                 return RedirectToAction("Index");
             }
             return View();
@@ -89,7 +92,7 @@ namespace CommerceWeb.Areas.Admin.Controllers
             }
             _unitOfWork.Category.Remove(obj);
             _unitOfWork.Save();
-            TempData["success"] = "Category deleted succesfully";
+            TempData["success"] = "Kategori başarıyla silindi";
             return RedirectToAction("Index");
         }
     }

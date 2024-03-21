@@ -2,12 +2,15 @@
 using Commerce.DataAccess.Repository.IRepository;
 using Commerce.Models;
 using Commerce.Models.ViewModels;
+using Commerce.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CommerceWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -86,7 +89,7 @@ namespace CommerceWeb.Areas.Admin.Controllers
                 }
                 
                 _unitOfWork.Save();
-                TempData["success"] = "Product created succesfully";
+                TempData["success"] = "Ürün başarıyla oluşturuldu.";
                 return RedirectToAction("Index");
             }
             else
@@ -124,7 +127,7 @@ namespace CommerceWeb.Areas.Admin.Controllers
             }
             _unitOfWork.Product.Remove(obj);
             _unitOfWork.Save();
-            TempData["success"] = "Product deleted succesfully";
+            TempData["success"] = "Ürün başarıyla silindi.";
             return RedirectToAction("Index");
         }
 
@@ -143,7 +146,7 @@ namespace CommerceWeb.Areas.Admin.Controllers
             var productToBeDeleted = _unitOfWork.Product.Get(u => u.Id == id);
             if (productToBeDeleted == null)
             {
-                return Json(new { success  = false, message = "Error while deleting" });
+                return Json(new { success  = false, message = "Ürün silerken hata oluştu!" });
             }
 
             var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToBeDeleted.ImageUrl.TrimStart('\\'));
@@ -156,7 +159,7 @@ namespace CommerceWeb.Areas.Admin.Controllers
             _unitOfWork.Product.Remove(productToBeDeleted);
             _unitOfWork.Save();
 
-            return Json(new { success = true, message = "Delete Successful" });
+            return Json(new { success = true, message = "Ürün başarıyla silindi." });
         }
 
         #endregion

@@ -21,7 +21,7 @@ namespace Commerce.DataAccess.Repository
         public void Update(Product obj)
         {
             var objFromDb = _db.Products.FirstOrDefault(u => u.Id == obj.Id);
-            if (objFromDb == null)
+            if (objFromDb != null)
             {
                 objFromDb.Title = obj.Title;
                 objFromDb.Description = obj.Description;
